@@ -27,10 +27,95 @@ h4 {
   display: inline-block;
 }
 
-/* .output {
-  width: 400px;
-} */
 .new {
   display: flex;
   justify-content: space-between;
+}
+
+.custom {
+  width: 200px !important;
+}
+
+/* For todo */
+
+.Todo-task {
+  position: relative;
+  transition: opacity 0.4s linear;
+}
+.Todo.comp {
+  transition: opacity 300ms ease-in-out;
+  transition-delay: 200ms;
+  opacity: 0.5;
+}
+
+.Todo.comp .Todo-task:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -0.5rem;
+  display: block;
+  width: 0%;
+  height: 4px;
+  background: rgb(243, 5, 25);
+  animation: strikeitem 0.3s ease-in 0s forwards;
+}
+
+@keyframes strikeitem {
+  to {
+    width: calc(100% + 1rem);
+  }
+}
+
+.custom-card {
+  width: 370px;
+  height: 150px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* color */
+
+.comp {
+  color: green;
+}
+
+.pen {
+  color: yellow;
+}
+
+.clo {
+  color: red;
+}
+
+.status {
+  display: flex;
+
+  justify-content: space-evenly;
+  align-items: center;
+}
+.status i {
+  margin: 10px;
+}
+
+/* status color */
+
+.completed {
+  background-color: green;
+  padding: 8px;
+  border-radius: 25px;
+  color: white;
+}
+.pending {
+  background-color: rgb(243, 182, 15);
+  padding: 8px;
+
+  color: white;
+  border-radius: 25px;
+}
+.closed {
+  background-color: red;
+  border-radius: 25px;
+  padding: 8px;
+  color: white;
 }

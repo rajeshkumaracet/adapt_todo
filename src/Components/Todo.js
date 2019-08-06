@@ -1,33 +1,36 @@
 import React, { Component } from "react";
 import "../App.css";
+
 class Todo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isEditing: false,
-      task: this.props.task
-    };
-    this.handleRemove = this.handleRemove.bind(this);
-    this.toggleForm = this.toggleForm.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleUpdate = this.handleUpdate.bind(this);
-  }
-  handleRemove() {
+  state = {
+    isEditing: false,
+    task: this.props.task,
+    status: this.props.status
+  };
+
+  handleRemove = () => {
     this.props.removeTodo(this.props.id);
-  }
-  toggleForm() {
+  };
+
+  toggleForm = () => {
     this.setState({ isEditing: !this.state.isEditing });
-  }
-  handleUpdate(evt) {
+  };
+
+  handleUpdate = evt => {
     evt.preventDefault();
     this.props.updateTodo(this.props.id, this.state.task);
     this.setState({ isEditing: false });
-  }
-  handleChange(evt) {
+  };
+
+  handleChange = evt => {
     this.setState({
       [evt.target.name]: evt.target.value
     });
-  }
+  };
+
+  handleToggle = evt => {
+    this.props.toggleTodo(this.props.id);
+  };
 
   render() {
     let result;
@@ -45,14 +48,23 @@ class Todo extends Component {
         </form>
       );
     } else {
-      result = <h4>{this.props.task}</h4>;
+      result = (
+        <h4
+          className={`Todo-task ${this.state.status}`}
+          onClick={this.handleToggle}
+        >
+          {this.props.task}
+        </h4>
+      );
     }
     return (
       <div className="card output out p-2 mb-1">
         <div className="card-body">
           <div className="row">
             <div className="col-md-12">
-              <div>{result}</div>
+              <div className={this.props.completed ? "Todo comp" : "Todo"}>
+                {result}
+              </div>
 
               <div className="new">
                 <i

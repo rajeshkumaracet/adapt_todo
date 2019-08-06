@@ -4,26 +4,21 @@ import Todo from "./Todo";
 import NewTodoForm from "./NewTodoForm";
 
 class TodoList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      todos: []
-    };
-    this.create = this.create.bind(this);
-    this.remove = this.remove.bind(this);
-    this.update = this.update.bind(this);
-  }
-  create(newTodo) {
+  state = { todos: [] };
+
+  create = newTodo => {
     this.setState({
-      todos: [...this.state.todos, newTodo]
+      todos: [newTodo, ...this.state.todos]
     });
-  }
-  remove(id) {
+  };
+
+  remove = id => {
     this.setState({
       todos: this.state.todos.filter(t => t.id !== id)
     });
-  }
-  update(id, updatedTask) {
+  };
+
+  update = (id, updatedTask) => {
     const updatedTodos = this.state.todos.map(todo => {
       if (todo.id === id) {
         return { ...todo, task: updatedTask };
@@ -31,28 +26,71 @@ class TodoList extends Component {
       return todo;
     });
     this.setState({ todos: updatedTodos });
-  }
+  };
+
+  resetHandler = () => {
+    this.setState({
+      todos: ""
+    });
+  };
+
+  toggleCompletion = id => {
+    const updatedTodos = this.state.todos.map(todo => {
+      if (todo.id === id) {
+        return { ...todo, completed: !todo.completed };
+      }
+      return todo;
+    });
+    this.setState({ todos: updatedTodos });
+  };
 
   render() {
-    const todos = this.state.todos.map(todo => {
-      return (
-        <Todo
-          key={todo.id}
-          id={todo.id}
-          task={todo.task}
-          completed={todo.completed}
-          removeTodo={this.remove}
-          updateTodo={this.update}
-        />
-      );
-    });
+    console.log(this.state.todos);
+    let todos;
+    if (this.state.todos.length > 0) {
+      todos = this.state.todos.map(todo => {
+        return (
+          <Todo
+            key={todo.id}
+            id={todo.id}
+            task={todo.task}
+            status={todo.status}
+            completed={todo.completed}
+            removeTodo={this.remove}
+            updateTodo={this.update}
+            toggleTodo={this.toggleCompletion}
+          />
+        );
+      });
+    }
+
     return (
       <>
         <div className="TodoList">
           <NewTodoForm createTodo={this.create} />
-        </div>
-        <div className="ren p-2">
-          <ul className="todo-list ">{todos}</ul>
+          <div className="text-center">
+            {this.state.todos.length > 0 && (
+              <div className="card custom-card text-center ">
+                <button
+                  className="btn custom mt-2 btn-danger "
+                  onClick={this.resetHandler}
+                >
+                  Clear All
+                </button>
+
+                <div className="mt-2 status">
+                  <i className="fas fa-palette fa-2x comp" />
+                  <span>Completed</span>
+                  <i className="fas fa-palette fa-2x pen" />
+                  <span>Pending</span>
+                  <i className="fas fa-palette fa-2x clo" /> <span>Closed</span>
+                </div>
+              </div>
+            )}
+            <div className="ren p-2">
+              <ul className="todo-list ">{todos}</ul>
+            </div>
+          </div>
         </div>
       </>
     );
